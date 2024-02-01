@@ -1,9 +1,9 @@
 class CollectionConstant {
   static const users = 'users';
-  static const academicAchievements = 'academic_achievements';
-  static const athleticParticipation = 'athletic_participation';
-  static const artPerformances = 'art_performances';
-  static const organizationMemberships = 'organization_memberships';
-  static const communityServices = 'community_services';
-  static const honorClasses = 'honor_classes';
+  static const academic = 'academic_achievements';
+  static const athletic = 'athletic_participation';
+  static const art = 'art_performances';
+  static const organization = 'organization_memberships';
+  static const community = 'community_services';
+  static const honor = 'honor_classes';
 }

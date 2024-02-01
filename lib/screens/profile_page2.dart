@@ -7,6 +7,7 @@ import 'package:SoulSync/widgets/profile_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ProfilePage2 extends StatefulWidget {
   const ProfilePage2({super.key});
@@ -20,12 +21,12 @@ class _ProfilePage2State extends State<ProfilePage2> {
   String _email = "";
   String _phone = "";
 
-  final _academicAchievementList = <ExperienceDto>[];
-  final _athleticParticipationList = <ExperienceDto>[];
-  final _artPerformanceList = <ExperienceDto>[];
-  final _organizationMembershipList = <ExperienceDto>[];
-  final _communityServicesList = <ExperienceDto>[];
-  final _honorClassList = <ExperienceDto>[];
+  final _academicList = <ExperienceDto>[];
+  final _athleticList = <ExperienceDto>[];
+  final _artList = <ExperienceDto>[];
+  final _organizationList = <ExperienceDto>[];
+  final _communityList = <ExperienceDto>[];
+  final _honorList = <ExperienceDto>[];
 
   var _isLoading = true;
 
@@ -51,83 +52,83 @@ class _ProfilePage2State extends State<ProfilePage2> {
           _phone = userSnapshot['Phone'];
         });
       } catch (e) {
-        print("Error fetching user data: $e");
+        Fluttertoast.showToast(msg: 'Error fetching user data: $e');
       }
     }
   }
 
   Future _getAllData() async {
     final instance = FirebaseFirestore.instance;
-    final academicAchievementResult = await instance
+    final academicResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.academicAchievements)
+        .collection(CollectionConstant.academic)
         .get();
 
-    final athleticParticipationResult = await instance
+    final athleticResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.athleticParticipation)
+        .collection(CollectionConstant.athletic)
         .get();
 
-    final artPerformancesResult = await instance
+    final artResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.artPerformances)
+        .collection(CollectionConstant.art)
         .get();
 
-    final organizationMembershipsResult = await instance
+    final organizationResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.organizationMemberships)
+        .collection(CollectionConstant.organization)
         .get();
 
-    final communityServicesResult = await instance
+    final communityResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.communityServices)
+        .collection(CollectionConstant.community)
         .get();
 
-    final honorClassResult = await instance
+    final honorResult = await instance
         .collection(CollectionConstant.users)
         .doc(_email)
-        .collection(CollectionConstant.honorClasses)
+        .collection(CollectionConstant.honor)
         .get();
 
     setState(() {
       /// Academic Achievement List
-      _academicAchievementList.clear();
-      _academicAchievementList.addAll(academicAchievementResult.docs.map((e) {
+      _academicList.clear();
+      _academicList.addAll(academicResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
       /// Athletic Participation List
-      _athleticParticipationList.clear();
-      _athleticParticipationList.addAll(athleticParticipationResult.docs.map((e) {
+      _athleticList.clear();
+      _athleticList.addAll(athleticResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
       /// Performing Arts Experience List
-      _artPerformanceList.clear();
-      _artPerformanceList.addAll(artPerformancesResult.docs.map((e) {
+      _artList.clear();
+      _artList.addAll(artResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
       /// Clubs and Organization Memberships List
-      _organizationMembershipList.clear();
-      _organizationMembershipList.addAll(organizationMembershipsResult.docs.map((e) {
+      _organizationList.clear();
+      _organizationList.addAll(organizationResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
       /// Community Service Hours List
-      _communityServicesList.clear();
-      _communityServicesList.addAll(communityServicesResult.docs.map((e) {
+      _communityList.clear();
+      _communityList.addAll(communityResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
       /// Community Service Hours List
-      _honorClassList.clear();
-      _honorClassList.addAll(honorClassResult.docs.map((e) {
+      _honorList.clear();
+      _honorList.addAll(honorResult.docs.map((e) {
         return e.data().toExperienceDto(e.id);
       }));
 
@@ -255,35 +256,50 @@ class _ProfilePage2State extends State<ProfilePage2> {
                   const SizedBox(height: 24),
                   ProfileSection(
                     label: 'Academic Achievements',
-                    experienceList: _academicAchievementList,
+                    experienceList: _academicList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.academic);
+                    },
                     onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Athletic Participation',
-                    experienceList: _athleticParticipationList,
+                    experienceList: _athleticList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.athletic);
+                    },
                     onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Performing Arts Experience',
-                    experienceList: _artPerformanceList,
+                    experienceList: _artList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.art);
+                    },
                     onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Clubs and Organization Memberships',
-                    experienceList: _organizationMembershipList,
+                    experienceList: _organizationList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.organization);
+                    },
                     onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Community Service Hours',
-                    experienceList: _communityServicesList,
+                    experienceList: _communityList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.community);
+                    },
                     onLogSheet: _onViewLogSheet,
                     onMoreInfo: _onMoreInfo,
                   ),
@@ -291,7 +307,10 @@ class _ProfilePage2State extends State<ProfilePage2> {
                   ProfileSection(
                     label: 'Honor Classes',
                     isIconEndPosition: true,
-                    experienceList: _honorClassList,
+                    experienceList: _honorList,
+                    onAdd: () {
+                      _onAddExperience(CollectionConstant.honor);
+                    },
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 80),
@@ -303,6 +322,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
       ],
     );
   }
+
+  void _onAddExperience(String collectionKey) {}
 
   void _onOpenInfoPage() {
     Navigator.push(
