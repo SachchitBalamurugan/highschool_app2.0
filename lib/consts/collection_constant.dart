@@ -6,4 +6,6 @@ class CollectionConstant {
   static const organization = 'organization_memberships';
   static const community = 'community_services';
   static const honor = 'honor_classes';
+
+  static const emptyImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/832px-No-Image-Placeholder.svg.png';
 }

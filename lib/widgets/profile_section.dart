@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:SoulSync/widgets/app_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -45,9 +46,11 @@ class _ProfileSectionState extends State<ProfileSection> {
         vertical: 8,
       ),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 12,
+        padding: const EdgeInsets.only(
+          left: 16,
+          top: 12,
+          bottom: 12,
+          right: 4,
         ),
         color: Colors.transparent,
         child: Column(
@@ -58,6 +61,9 @@ class _ProfileSectionState extends State<ProfileSection> {
                 Expanded(
                   child: Text(
                     widget.label,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.start,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
@@ -67,6 +73,7 @@ class _ProfileSectionState extends State<ProfileSection> {
                 IconButton(
                   onPressed: widget.onAdd,
                   splashRadius: 24,
+                  padding: EdgeInsets.zero,
                   icon: const Icon(
                     Icons.add_rounded,
                     color: Color(0xFF9F9D9D),
@@ -94,7 +101,9 @@ class _ProfileSectionState extends State<ProfileSection> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8),
                           child: CachedNetworkImage(
-                            imageUrl: item.organizerIcon,
+                            imageUrl: item.organizerIcon.isEmpty
+                                ? CollectionConstant.emptyImage
+                                : item.organizerIcon,
                             width: 64,
                             height: 64,
                             fit: BoxFit.contain,
@@ -152,7 +161,8 @@ class _ProfileSectionState extends State<ProfileSection> {
                                             color: const Color(0xFFA5A5A5),
                                             width: 2,
                                           ),
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 12,
@@ -185,7 +195,8 @@ class _ProfileSectionState extends State<ProfileSection> {
                                             color: const Color(0xFFA5A5A5),
                                             width: 2,
                                           ),
-                                          borderRadius: BorderRadius.circular(16),
+                                          borderRadius:
+                                              BorderRadius.circular(16),
                                         ),
                                         padding: const EdgeInsets.symmetric(
                                           horizontal: 12,

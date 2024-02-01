@@ -1,3 +1,5 @@
+import 'package:SoulSync/widgets/app_extension.dart';
+
 class ExperienceDto {
   final String id;
   final String award;
@@ -20,5 +22,14 @@ class ExperienceDto {
   @override
   String toString() {
     return 'ExperienceDto{id: $id, award: $award, event: $event, organizer: $organizer, organizerIcon: $organizerIcon, date: $date, certificates: $certificates}';
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'award': award,
+      'event': event,
+      'organizer': organizer,
+      'date': date.toTimestamp(),
+    };
   }
 }

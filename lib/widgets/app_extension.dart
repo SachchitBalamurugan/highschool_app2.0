@@ -68,4 +68,34 @@ extension StringExt on String {
       return '';
     }
   }
+
+  Timestamp? toTimestamp() {
+    if (isEmpty) {
+      return null;
+    }
+
+    try {
+      final dt = DateTime.parse(this);
+
+      return Timestamp.fromDate(dt);
+    } catch (e) {
+      return null;
+    }
+  }
+}
+
+extension DateTimeExt on DateTime? {
+  String translateDate({
+    String toFormat = 'dd MMM yyyy',
+  }) {
+    if (this == null) {
+      return '';
+    }
+
+    try {
+      return DateFormat(toFormat, 'en_US').format(this!);
+    } catch (e) {
+      return '';
+    }
+  }
 }

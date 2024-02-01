@@ -1,4 +1,5 @@
 import 'package:SoulSync/consts/collection_constant.dart';
+import 'package:SoulSync/dialogs/add_experience_dialog.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:SoulSync/screens/account.dart';
 import 'package:SoulSync/screens/app_info.dart';
@@ -35,105 +36,6 @@ class _ProfilePage2State extends State<ProfilePage2> {
     super.initState();
 
     _loadUserName().then((_) => _getAllData());
-  }
-
-  Future<void> _loadUserName() async {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection(CollectionConstant.users)
-            .doc(user.email)
-            .get();
-
-        setState(() {
-          _userName = userSnapshot['User Name'] ?? "User";
-          _email = userSnapshot['Email'];
-          _phone = userSnapshot['Phone'];
-        });
-      } catch (e) {
-        Fluttertoast.showToast(msg: 'Error fetching user data: $e');
-      }
-    }
-  }
-
-  Future _getAllData() async {
-    final instance = FirebaseFirestore.instance;
-    final academicResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.academic)
-        .get();
-
-    final athleticResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.athletic)
-        .get();
-
-    final artResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.art)
-        .get();
-
-    final organizationResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.organization)
-        .get();
-
-    final communityResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.community)
-        .get();
-
-    final honorResult = await instance
-        .collection(CollectionConstant.users)
-        .doc(_email)
-        .collection(CollectionConstant.honor)
-        .get();
-
-    setState(() {
-      /// Academic Achievement List
-      _academicList.clear();
-      _academicList.addAll(academicResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      /// Athletic Participation List
-      _athleticList.clear();
-      _athleticList.addAll(athleticResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      /// Performing Arts Experience List
-      _artList.clear();
-      _artList.addAll(artResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      /// Clubs and Organization Memberships List
-      _organizationList.clear();
-      _organizationList.addAll(organizationResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      /// Community Service Hours List
-      _communityList.clear();
-      _communityList.addAll(communityResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      /// Community Service Hours List
-      _honorList.clear();
-      _honorList.addAll(honorResult.docs.map((e) {
-        return e.data().toExperienceDto(e.id);
-      }));
-
-      _isLoading = false;
-    });
   }
 
   @override
@@ -323,7 +225,135 @@ class _ProfilePage2State extends State<ProfilePage2> {
     );
   }
 
-  void _onAddExperience(String collectionKey) {}
+  Future<void> _loadUserName() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection(CollectionConstant.users)
+            .doc(user.email)
+            .get();
+
+        setState(() {
+          _userName = userSnapshot['User Name'] ?? "User";
+          _email = userSnapshot['Email'];
+          _phone = userSnapshot['Phone'];
+        });
+      } catch (e) {
+        Fluttertoast.showToast(msg: 'Error fetching user data: $e');
+      }
+    }
+  }
+
+  Future _getAllData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final instance = FirebaseFirestore.instance;
+    final academicResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.academic)
+        .get();
+
+    final athleticResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.athletic)
+        .get();
+
+    final artResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.art)
+        .get();
+
+    final organizationResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.organization)
+        .get();
+
+    final communityResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.community)
+        .get();
+
+    final honorResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.honor)
+        .get();
+
+    setState(() {
+      /// Academic Achievement List
+      _academicList.clear();
+      _academicList.addAll(academicResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Athletic Participation List
+      _athleticList.clear();
+      _athleticList.addAll(athleticResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Performing Arts Experience List
+      _artList.clear();
+      _artList.addAll(artResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Clubs and Organization Memberships List
+      _organizationList.clear();
+      _organizationList.addAll(organizationResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Community Service Hours List
+      _communityList.clear();
+      _communityList.addAll(communityResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Community Service Hours List
+      _honorList.clear();
+      _honorList.addAll(honorResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      _isLoading = false;
+    });
+  }
+
+  void _onAddExperience(String collectionKey) async {
+    final result = await showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) {
+        return AddExperienceDialog(
+          collectionKey: collectionKey,
+        );
+      },
+    );
+
+    if (result != null && result is ExperienceDto) {
+      final instance = FirebaseFirestore.instance;
+
+      /// Save
+      await instance
+          .collection(CollectionConstant.users)
+          .doc(_email)
+          .collection(collectionKey)
+          .add(result.toMap());
+
+      /// Refresh
+      await _getAllData();
+    }
+  }
 
   void _onOpenInfoPage() {
     Navigator.push(
