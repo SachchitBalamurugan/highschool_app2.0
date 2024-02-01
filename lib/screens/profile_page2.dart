@@ -1,6 +1,8 @@
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:SoulSync/screens/account.dart';
 import 'package:SoulSync/screens/app_info.dart';
+import 'package:SoulSync/widgets/app_extension.dart';
 import 'package:SoulSync/widgets/profile_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,10 +20,20 @@ class _ProfilePage2State extends State<ProfilePage2> {
   String _email = "";
   String _phone = "";
 
+  final _academicAchievementList = <ExperienceDto>[];
+  final _athleticParticipationList = <ExperienceDto>[];
+  final _artPerformanceList = <ExperienceDto>[];
+  final _organizationMembershipList = <ExperienceDto>[];
+  final _communityServicesList = <ExperienceDto>[];
+  final _honorClassList = <ExperienceDto>[];
+
+  var _isLoading = true;
+
   @override
   void initState() {
     super.initState();
-    _loadUserName();
+
+    _loadUserName().then((_) => _getAllData());
   }
 
   Future<void> _loadUserName() async {
@@ -29,7 +41,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
     if (user != null) {
       try {
         DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
+            .collection(CollectionConstant.users)
             .doc(user.email)
             .get();
 
@@ -42,6 +54,85 @@ class _ProfilePage2State extends State<ProfilePage2> {
         print("Error fetching user data: $e");
       }
     }
+  }
+
+  Future _getAllData() async {
+    final instance = FirebaseFirestore.instance;
+    final academicAchievementResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.academicAchievements)
+        .get();
+
+    final athleticParticipationResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.athleticParticipation)
+        .get();
+
+    final artPerformancesResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.artPerformances)
+        .get();
+
+    final organizationMembershipsResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.organizationMemberships)
+        .get();
+
+    final communityServicesResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.communityServices)
+        .get();
+
+    final honorClassResult = await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(CollectionConstant.honorClasses)
+        .get();
+
+    setState(() {
+      /// Academic Achievement List
+      _academicAchievementList.clear();
+      _academicAchievementList.addAll(academicAchievementResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Athletic Participation List
+      _athleticParticipationList.clear();
+      _athleticParticipationList.addAll(athleticParticipationResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Performing Arts Experience List
+      _artPerformanceList.clear();
+      _artPerformanceList.addAll(artPerformancesResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Clubs and Organization Memberships List
+      _organizationMembershipList.clear();
+      _organizationMembershipList.addAll(organizationMembershipsResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Community Service Hours List
+      _communityServicesList.clear();
+      _communityServicesList.addAll(communityServicesResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      /// Community Service Hours List
+      _honorClassList.clear();
+      _honorClassList.addAll(honorClassResult.docs.map((e) {
+        return e.data().toExperienceDto(e.id);
+      }));
+
+      _isLoading = false;
+    });
   }
 
   @override
@@ -152,129 +243,60 @@ class _ProfilePage2State extends State<ProfilePage2> {
           expandedHeight: 190,
           automaticallyImplyLeading: false,
         ),
-        SliverToBoxAdapter(
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                ProfileSection(
-                  label: 'Academic Achievements',
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'Deca National 2nd Place',
-                      event: 'Deca Business Competition - Business topic',
-                      date: 'Jan 12, 2023',
-                      organizer: 'Deca',
-                      organizerIcon: 'https://nmctso.com/wp-content/uploads/2022/07/DECA-Logo-Stack-Blue.jpeg',
-                    ),
-                    ExperienceDto(
-                      award: 'Deca National 2nd Place',
-                      event: 'Deca Business Competition - Business topic',
-                      date: 'Jan 12, 2023',
-                      organizer: 'Deca',
-                      organizerIcon: 'https://nmctso.com/wp-content/uploads/2022/07/DECA-Logo-Stack-Blue.jpeg',
-                    ),
-                    ExperienceDto(
-                      award: 'Deca National 2nd Place',
-                      event: 'Deca Business Competition - Business topic',
-                      date: 'Jan 12, 2023',
-                      organizer: 'Deca',
-                      organizerIcon: 'https://nmctso.com/wp-content/uploads/2022/07/DECA-Logo-Stack-Blue.jpeg',
-                    ),
-                  ],
-                  onViewAward: _onViewAward,
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 8),
-                ProfileSection(
-                  label: 'Athletic Participation',
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'NFL Football Quarter Back',
-                      event: 'Dallas Cowboys - 4 National Trophies',
-                      date: 'Jan 12, 2023',
-                      organizer: 'NFL',
-                      organizerIcon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/1200px-National_Football_League_logo.svg.png',
-                    ),
-                    ExperienceDto(
-                      award: 'NFL Football Quarter Back',
-                      event: 'Dallas Cowboys - 4 National Trophies',
-                      date: 'Jan 12, 2023',
-                      organizer: 'NFL',
-                      organizerIcon: 'https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/National_Football_League_logo.svg/1200px-National_Football_League_logo.svg.png',
-                    ),
-                  ],
-                  onViewAward: _onViewAward,
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 8),
-                ProfileSection(
-                  label: 'Performing Arts Experience',
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'Fine Arts National Team',
-                      event: 'National Fine Arts',
-                      date: 'Jan 12, 2023',
-                      organizer: '-',
-                      organizerIcon: 'https://images-platform.99static.com//YC7wFTo5yPJl8KJ6gsvBgbuBNCk=/147x0:867x720/fit-in/500x500/99designs-contests-attachments/16/16829/attachment_16829470',
-                    ),
-                  ],
-                  onViewAward: _onViewAward,
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 8),
-                ProfileSection(
-                  label: 'Clubs and Organization Memberships',
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'Vice President',
-                      event: 'DECA',
-                      date: 'Jan 12, 2023',
-                      organizer: 'Deca',
-                      organizerIcon: 'https://nmctso.com/wp-content/uploads/2022/07/DECA-Logo-Stack-Blue.jpeg',
-                    ),
-                    ExperienceDto(
-                      award: 'President of Board',
-                      event: 'BPA (Business Professionals of America)',
-                      date: 'Jan 12, 2023',
-                      organizer: 'BPA',
-                      organizerIcon: 'https://yt3.googleusercontent.com/kJDmKEMe0RHiZQwOsiuzubzSOk1E7vSY4nMPkaQmFBY24V_ZXfF4Z-UhxI8U29CcSDCP-ouKI-M=s900-c-k-c0x00ffffff-no-rj',
-                    ),
-                  ],
-                  onViewAward: _onViewAward,
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 8),
-                ProfileSection(
-                  label: 'Community Service Hours',
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'Flash Cards Volunteer',
-                      event: 'Classroom Central - 50 Total Hours',
-                      date: 'Jan 12, 2023',
-                      organizer: 'Classroom Central',
-                      organizerIcon: 'https://play-lh.googleusercontent.com/z7bP0KPGHRfkaGx5jWaybjEt5LM0TyyWt5SUZk_ghf8PHe9yTRlccAtxzLoTSrfTACs=w240-h480-rw',
-                    ),
-                  ],
-                  onLogSheet: _onViewLogSheet,
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 8),
-                ProfileSection(
-                  label: 'Honor Classes',
-                  isIconEndPosition: true,
-                  experienceList: const [
-                    ExperienceDto(
-                      award: 'AP Computer Science',
-                      event: 'Associated with Lone Star Highschool',
-                      date: 'Jan 12, 2023',
-                      organizer: '-',
-                      organizerIcon: 'https://static.thenounproject.com/png/969639-200.png',
-                    ),
-                  ],
-                  onMoreInfo: _onMoreInfo,
-                ),
-                const SizedBox(height: 80),
-              ],
+        SliverVisibility(
+          visible: !_isLoading,
+          replacementSliver: const SliverFillRemaining(
+            child: Center(child: CircularProgressIndicator()),
+          ),
+          sliver: SliverToBoxAdapter(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 24),
+                  ProfileSection(
+                    label: 'Academic Achievements',
+                    experienceList: _academicAchievementList,
+                    onViewAward: _onViewAward,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 8),
+                  ProfileSection(
+                    label: 'Athletic Participation',
+                    experienceList: _athleticParticipationList,
+                    onViewAward: _onViewAward,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 8),
+                  ProfileSection(
+                    label: 'Performing Arts Experience',
+                    experienceList: _artPerformanceList,
+                    onViewAward: _onViewAward,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 8),
+                  ProfileSection(
+                    label: 'Clubs and Organization Memberships',
+                    experienceList: _organizationMembershipList,
+                    onViewAward: _onViewAward,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 8),
+                  ProfileSection(
+                    label: 'Community Service Hours',
+                    experienceList: _communityServicesList,
+                    onLogSheet: _onViewLogSheet,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 8),
+                  ProfileSection(
+                    label: 'Honor Classes',
+                    isIconEndPosition: true,
+                    experienceList: _honorClassList,
+                    onMoreInfo: _onMoreInfo,
+                  ),
+                  const SizedBox(height: 80),
+                ],
+              ),
             ),
           ),
         ),
@@ -305,15 +327,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
     );
   }
 
-  void _onViewAward(String experienceId) {
+  void _onViewAward(String experienceId) {}
 
-  }
+  void _onViewLogSheet(String experienceId) {}
 
-  void _onViewLogSheet(String experienceId) {
-
-  }
-
-  void _onMoreInfo(String experienceId) {
-
-  }
+  void _onMoreInfo(String experienceId) {}
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:SoulSync/models/experience_dto.dart';
+import 'package:SoulSync/widgets/app_extension.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -124,7 +125,9 @@ class _ProfileSectionState extends State<ProfileSection> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              item.date,
+                              item.date.translateDate(
+                                toFormat: 'MMM dd, yyyy',
+                              ),
                               style: const TextStyle(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w400,

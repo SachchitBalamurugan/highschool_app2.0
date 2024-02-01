@@ -16,4 +16,9 @@ class ExperienceDto {
     this.date = '',
     this.certificates = const [],
   });
+
+  @override
+  String toString() {
+    return 'ExperienceDto{id: $id, award: $award, event: $event, organizer: $organizer, organizerIcon: $organizerIcon, date: $date, certificates: $certificates}';
+  }
 }
