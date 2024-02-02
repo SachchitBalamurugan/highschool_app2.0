@@ -16,15 +16,19 @@ extension MapExt on Map<String, dynamic> {
   }
 
   List<String> getListStringOrEmpty(String key) {
+    final newValues = <String>[];
+
     if (containsKey(key)) {
       final value = this[key];
 
-      if (value is List<String>) {
-        return value;
+      // print('Value: $value | ${value as List<dynamic>}');
+      if (value is List<dynamic>) {
+        newValues.clear();
+        newValues.addAll(value.map((e) => e.toString()));
       }
     }
 
-    return [];
+    return newValues;
   }
 
   Timestamp getTimeStampOrNow(String key) {

@@ -1,13 +1,12 @@
 // ignore_for_file: file_names
 
+import 'package:SoulSync/screens/community.dart';
+import 'package:SoulSync/screens/home_screen.dart';
+import 'package:SoulSync/screens/mood_chart.dart';
 import 'package:SoulSync/screens/profile_page2.dart';
 import 'package:SoulSync/screens/python_chat.dart';
+import 'package:SoulSync/screens/theraphist_nearme.dart';
 import 'package:flutter/material.dart';
-
-import '../screens/community.dart';
-import '../screens/home_screen.dart';
-import '../screens/mood_chart.dart';
-import '../screens/theraphist_nearme.dart';
 
 class BottomNavBar extends StatefulWidget {
   const BottomNavBar({Key? key}) : super(key: key);
