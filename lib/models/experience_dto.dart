@@ -7,7 +7,9 @@ class ExperienceDto {
   final String organizer;
   final String organizerIcon;
   final String date;
+  final String awardDescription;
   final List<String> certificates;
+  final List<String> logSheets;
 
   const ExperienceDto({
     this.id = '',
@@ -16,12 +18,14 @@ class ExperienceDto {
     this.organizer = '',
     this.organizerIcon = '',
     this.date = '',
+    this.awardDescription = '',
     this.certificates = const [],
+    this.logSheets = const [],
   });
 
   @override
   String toString() {
-    return 'ExperienceDto{id: $id, award: $award, event: $event, organizer: $organizer, organizerIcon: $organizerIcon, date: $date, certificates: $certificates}';
+    return 'ExperienceDto{id: $id, award: $award, event: $event, organizer: $organizer, organizerIcon: $organizerIcon, date: $date, awardDescription: $awardDescription, certificates: $certificates, logSheets: $logSheets}';
   }
 
   Map<String, dynamic> toMap() {
@@ -30,6 +34,7 @@ class ExperienceDto {
       'event': event,
       'organizer': organizer,
       'date': date.toTimestamp(),
+      'awardDescription': awardDescription,
     };
   }
 }

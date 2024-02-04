@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/dialogs/add_experience_dialog.dart';
 import 'package:SoulSync/dialogs/set_award_dialog.dart';
+import 'package:SoulSync/dialogs/set_logsheet_dialog.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:SoulSync/screens/account.dart';
 import 'package:SoulSync/screens/app_info.dart';
@@ -178,11 +179,11 @@ class _ProfilePage2State extends State<ProfilePage2> {
                     onAdd: () {
                       _onAddExperience(CollectionConstant.academic);
                     },
-                    onViewAward: (experienceId, award, certificates) {
+                    onViewAward: (experienceId, awardDesc, certificates) {
                       _onViewAward(
                         CollectionConstant.academic,
                         experienceId,
-                        award,
+                        awardDesc,
                         certificates,
                       );
                     },
@@ -195,11 +196,11 @@ class _ProfilePage2State extends State<ProfilePage2> {
                     onAdd: () {
                       _onAddExperience(CollectionConstant.athletic);
                     },
-                    onViewAward: (experienceId, award, certificates) {
+                    onViewAward: (experienceId, awardDesc, certificates) {
                       _onViewAward(
                         CollectionConstant.athletic,
                         experienceId,
-                        award,
+                        awardDesc,
                         certificates,
                       );
                     },
@@ -212,11 +213,11 @@ class _ProfilePage2State extends State<ProfilePage2> {
                     onAdd: () {
                       _onAddExperience(CollectionConstant.art);
                     },
-                    onViewAward: (experienceId, award, certificates) {
+                    onViewAward: (experienceId, awardDesc, certificates) {
                       _onViewAward(
                         CollectionConstant.art,
                         experienceId,
-                        award,
+                        awardDesc,
                         certificates,
                       );
                     },
@@ -229,11 +230,11 @@ class _ProfilePage2State extends State<ProfilePage2> {
                     onAdd: () {
                       _onAddExperience(CollectionConstant.organization);
                     },
-                    onViewAward: (experienceId, award, certificates) {
+                    onViewAward: (experienceId, awardDesc, certificates) {
                       _onViewAward(
                         CollectionConstant.organization,
                         experienceId,
-                        award,
+                        awardDesc,
                         certificates,
                       );
                     },
@@ -246,7 +247,13 @@ class _ProfilePage2State extends State<ProfilePage2> {
                     onAdd: () {
                       _onAddExperience(CollectionConstant.community);
                     },
-                    onLogSheet: _onViewLogSheet,
+                    onLogSheet: (experienceId, logSheets) {
+                      _onViewLogSheet(
+                        CollectionConstant.community,
+                        experienceId,
+                        logSheets,
+                      );
+                    },
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
@@ -425,28 +432,28 @@ class _ProfilePage2State extends State<ProfilePage2> {
   void _onViewAward(
     String collectionKey,
     String experienceId,
-    String award,
+    String description,
     List<String> certificateUrls,
   ) async {
     final result = await showDialog(
       context: context,
       builder: (ctx) {
         return SetAwardDialog(
-          award: award,
+          description: description,
           urls: certificateUrls,
         );
       },
     );
 
     if (result != null && result is List) {
-      var newAwardName = award;
+      var newDescription = description;
       final filePaths = <String>[];
 
       final first = result.elementAtOrNull(0);
       final second = result.elementAtOrNull(1);
 
       if (first != null && first is String) {
-        newAwardName = first;
+        newDescription = first;
       }
       if (second != null && second is List<String>) {
         filePaths.clear();
@@ -456,26 +463,46 @@ class _ProfilePage2State extends State<ProfilePage2> {
       _onSaveAward(
         collectionKey,
         experienceId,
-        newAwardName,
+        newDescription,
         certificateUrls,
         filePaths,
       );
     }
   }
 
-  void _onViewLogSheet(String experienceId) {}
-
-  void _onMoreInfo(String experienceId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MoreInfo()),
+  void _onViewLogSheet(
+    String collectionKey,
+    String experienceId,
+    List<String> logSheetUrls,
+  ) async {
+    final result = await showDialog(
+      context: context,
+      builder: (ctx) {
+        return SetLogSheetDialog(
+          urls: logSheetUrls,
+        );
+      },
     );
+
+    if (result != null && result is List<String>) {
+      final filePaths = <String>[];
+
+      filePaths.clear();
+      filePaths.addAll(result);
+
+      _onSaveLogSheet(
+        collectionKey,
+        experienceId,
+        logSheetUrls,
+        filePaths,
+      );
+    }
   }
 
   void _onSaveAward(
     String collectionKey,
     String experienceId,
-    String newAwardName,
+    String newDescription,
     List<String> certificateUrls,
     List<String> filePaths,
   ) async {
@@ -500,7 +527,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
     }
 
     final newMap = <String, dynamic>{};
-    newMap['award'] = newAwardName;
+    newMap['awardDescription'] = newDescription;
     newMap['certificates'] = fileUrls;
 
     final instance = FirebaseFirestore.instance;
@@ -517,6 +544,58 @@ class _ProfilePage2State extends State<ProfilePage2> {
 
     /// Refresh
     await _getAllData();
+  }
+
+  void _onSaveLogSheet(
+    String collectionKey,
+    String experienceId,
+    List<String> logSheetUrls,
+    List<String> filePaths,
+  ) async {
+    showLoadingDialog();
+
+    final storageRef = FirebaseStorage.instance.ref();
+    final fileUrls = <String>[];
+
+    fileUrls.addAll(logSheetUrls);
+
+    for (var e in filePaths) {
+      final file = File(e);
+      final fileName = e.split('/').lastOrNull;
+
+      final path = '${CollectionConstant.storageExperiences}/$fileName';
+      final references = storageRef.child(path);
+
+      final snapshot = await references.putFile(file);
+      final fileUrl = await snapshot.ref.getDownloadURL();
+
+      fileUrls.add(fileUrl);
+    }
+
+    final newMap = <String, dynamic>{};
+    newMap['logSheets'] = fileUrls;
+
+    final instance = FirebaseFirestore.instance;
+
+    /// Save
+    await instance
+        .collection(CollectionConstant.users)
+        .doc(_email)
+        .collection(collectionKey)
+        .doc(experienceId)
+        .update(newMap);
+
+    hideLoadingDialog();
+
+    /// Refresh
+    await _getAllData();
+  }
+
+  void _onMoreInfo(String experienceId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MoreInfo()),
+    );
   }
 
   void showLoadingDialog({

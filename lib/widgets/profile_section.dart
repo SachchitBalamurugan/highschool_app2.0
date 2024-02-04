@@ -12,7 +12,7 @@ class ProfileSection extends StatefulWidget {
   final bool isIconEndPosition;
   final VoidCallback? onAdd;
   final Function(String, String, List<String>)? onViewAward;
-  final Function(String)? onLogSheet;
+  final Function(String, List<String>)? onLogSheet;
   final Function(String)? onMoreInfo;
 
   const ProfileSection({
@@ -154,7 +154,7 @@ class _ProfileSectionState extends State<ProfileSection> {
                                       onTap: () {
                                         widget.onViewAward?.call(
                                           item.id,
-                                          item.award,
+                                          item.awardDescription,
                                           item.certificates,
                                         );
                                       },
@@ -190,7 +190,10 @@ class _ProfileSectionState extends State<ProfileSection> {
                                     padding: const EdgeInsets.only(right: 16),
                                     child: InkWell(
                                       onTap: () {
-                                        widget.onLogSheet?.call(item.id);
+                                        widget.onLogSheet?.call(
+                                          item.id,
+                                          item.logSheets,
+                                        );
                                       },
                                       borderRadius: BorderRadius.circular(16),
                                       child: Container(

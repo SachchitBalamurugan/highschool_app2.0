@@ -4,33 +4,23 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
-class SetAwardDialog extends StatefulWidget {
-  final String description;
+class SetLogSheetDialog extends StatefulWidget {
   final List<String> urls;
 
-  const SetAwardDialog({
+  const SetLogSheetDialog({
     super.key,
-    required this.description,
     this.urls = const [],
   });
 
   @override
-  State<SetAwardDialog> createState() => _SetAwardDialogState();
+  State<SetLogSheetDialog> createState() => _SetLogSheetDialogState();
 }
 
-class _SetAwardDialogState extends State<SetAwardDialog> {
+class _SetLogSheetDialogState extends State<SetLogSheetDialog> {
   final _supportedFileType = ['jpg', 'jpeg', 'png'];
   final _picker = ImagePicker();
-  final _descriptionController = TextEditingController();
 
   final _filePaths = <String>[];
-
-  @override
-  void initState() {
-    super.initState();
-
-    _descriptionController.text = widget.description;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,21 +35,10 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const Text(
-                "Awards",
+                "Log Sheet",
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: TextFormField(
-                  controller: _descriptionController,
-                  decoration: const InputDecoration(
-                    hintText: 'Insert award description',
-                  ),
-                  textInputAction: TextInputAction.next,
                 ),
               ),
               const SizedBox(height: 24),
@@ -140,16 +119,11 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
   }
 
   void _onSave() {
-    final newDescription = _descriptionController.text;
-    if (newDescription.isEmpty) {
-      Fluttertoast.showToast(msg: 'Please fill award');
-      return;
-    }
     if (widget.urls.isEmpty && _filePaths.isEmpty) {
       Fluttertoast.showToast(msg: 'Please insert at least one image');
       return;
     }
 
-    Navigator.of(context).pop([newDescription, _filePaths]);
+    Navigator.of(context).pop(_filePaths);
   }
 }

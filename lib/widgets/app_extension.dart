@@ -51,7 +51,9 @@ extension MapExt on Map<String, dynamic> {
       date: getTimeStampOrNow('date').toDate().toString(),
       organizer: getStringOrEmpty('organizer'),
       organizerIcon: getStringOrEmpty('organizerIcon'),
+      awardDescription: getStringOrEmpty('awardDescription'),
       certificates: getListStringOrEmpty('certificates'),
+      logSheets: getListStringOrEmpty('logSheets'),
     );
   }
 }
