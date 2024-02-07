@@ -26,40 +26,43 @@ class RemovableAttachment extends StatelessWidget {
       child: Stack(
         children: [
           Container(
-            padding: const EdgeInsets.only(top: 8),
-            margin: const EdgeInsets.only(left: 12, right: 12, top: 4),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(roundedRadius),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
-                ),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(roundedRadius),
+              border: Border.all(
+                color: Colors.grey,
+                width: 2,
               ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(roundedRadius - 2),
-                child: Image.file(
-                  File(filePath),
-                  height: previewWidth,
-                  width: previewWidth,
-                  fit: BoxFit.cover,
-                ),
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(roundedRadius - 2),
+              child: Image.file(
+                File(filePath),
+                height: previewWidth,
+                width: previewWidth,
+                fit: BoxFit.cover,
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.topRight,
-            child: GestureDetector(
-              onTap: onRemove,
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                padding: const EdgeInsets.all(6),
-                child: const Icon(
-                  Icons.close,
-                  size: 20,
+          Visibility(
+            visible: onRemove != null,
+            child: Align(
+              alignment: Alignment.topRight,
+              child: GestureDetector(
+                onTap: onRemove,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.5),
+                    borderRadius: const BorderRadius.only(
+                      topRight: Radius.circular(16),
+                      bottomLeft: Radius.circular(16),
+                    )
+                  ),
+                  padding: const EdgeInsets.all(8),
+                  child: const Icon(
+                    Icons.close,
+                    size: 20,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),

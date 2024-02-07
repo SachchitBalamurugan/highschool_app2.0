@@ -7,7 +7,7 @@ import 'package:SoulSync/dialogs/set_logsheet_dialog.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:SoulSync/screens/account.dart';
 import 'package:SoulSync/screens/app_info.dart';
-import 'package:SoulSync/screens/more_info_page.dart';
+import 'package:SoulSync/screens/more_info_page2.dart';
 import 'package:SoulSync/widgets/app_extension.dart';
 import 'package:SoulSync/widgets/profile_section.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -25,10 +25,6 @@ class ProfilePage2 extends StatefulWidget {
 }
 
 class _ProfilePage2State extends State<ProfilePage2> {
-  String _userName = "";
-  String _email = "";
-  String _phone = "";
-
   final _academicList = <ExperienceDto>[];
   final _athleticList = <ExperienceDto>[];
   final _artList = <ExperienceDto>[];
@@ -36,6 +32,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
   final _communityList = <ExperienceDto>[];
   final _honorList = <ExperienceDto>[];
 
+  var _userName = "";
+  var _email = "";
+  var _phone = "";
   var _isLoading = true;
 
   CustomProgressDialog? _progressDialog;
@@ -44,7 +43,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
   void initState() {
     super.initState();
 
-    _loadUserName().then((_) => _getAllData());
+    _getUserInfo().then((_) => _getAllData());
   }
 
   @override
@@ -175,95 +174,55 @@ class _ProfilePage2State extends State<ProfilePage2> {
                   const SizedBox(height: 24),
                   ProfileSection(
                     label: 'Academic Achievements',
+                    collectionKey: CollectionConstant.academic,
                     experienceList: _academicList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.academic);
-                    },
-                    onViewAward: (experienceId, awardDesc, certificates) {
-                      _onViewAward(
-                        CollectionConstant.academic,
-                        experienceId,
-                        awardDesc,
-                        certificates,
-                      );
-                    },
+                    onAdd: _onAddExperience,
+                    onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Athletic Participation',
+                    collectionKey: CollectionConstant.athletic,
                     experienceList: _athleticList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.athletic);
-                    },
-                    onViewAward: (experienceId, awardDesc, certificates) {
-                      _onViewAward(
-                        CollectionConstant.athletic,
-                        experienceId,
-                        awardDesc,
-                        certificates,
-                      );
-                    },
+                    onAdd: _onAddExperience,
+                    onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Performing Arts Experience',
+                    collectionKey: CollectionConstant.art,
                     experienceList: _artList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.art);
-                    },
-                    onViewAward: (experienceId, awardDesc, certificates) {
-                      _onViewAward(
-                        CollectionConstant.art,
-                        experienceId,
-                        awardDesc,
-                        certificates,
-                      );
-                    },
+                    onAdd: _onAddExperience,
+                    onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Clubs and Organization Memberships',
+                    collectionKey: CollectionConstant.organization,
                     experienceList: _organizationList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.organization);
-                    },
-                    onViewAward: (experienceId, awardDesc, certificates) {
-                      _onViewAward(
-                        CollectionConstant.organization,
-                        experienceId,
-                        awardDesc,
-                        certificates,
-                      );
-                    },
+                    onAdd: _onAddExperience,
+                    onViewAward: _onViewAward,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Community Service Hours',
+                    collectionKey: CollectionConstant.community,
                     experienceList: _communityList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.community);
-                    },
-                    onLogSheet: (experienceId, logSheets) {
-                      _onViewLogSheet(
-                        CollectionConstant.community,
-                        experienceId,
-                        logSheets,
-                      );
-                    },
+                    onAdd: _onAddExperience,
+                    onLogSheet: _onViewLogSheet,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 8),
                   ProfileSection(
                     label: 'Honor Classes',
+                    collectionKey: CollectionConstant.honor,
                     isIconEndPosition: true,
                     experienceList: _honorList,
-                    onAdd: () {
-                      _onAddExperience(CollectionConstant.honor);
-                    },
+                    onAdd: _onAddExperience,
                     onMoreInfo: _onMoreInfo,
                   ),
                   const SizedBox(height: 80),
@@ -276,7 +235,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
     );
   }
 
-  Future<void> _loadUserName() async {
+  Future<void> _getUserInfo() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       try {
@@ -416,10 +375,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
   }
 
   void _onOpenProfilePage() {
-    // Replace the following code with your navigation logic
     Navigator.of(context).push(
       MaterialPageRoute(builder: (context) {
-        // Replace `YourDestinationScreen` with the screen you want to navigate to.
         return AccountScreen(
           email: _email,
           phone: _phone,
@@ -591,10 +548,23 @@ class _ProfilePage2State extends State<ProfilePage2> {
     await _getAllData();
   }
 
-  void _onMoreInfo(String experienceId) {
+  void _onMoreInfo(String collectionKey, String experienceId) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => MoreInfo(),
+    //   ),
+    // );
+    // return;
+
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MoreInfo()),
+      MaterialPageRoute(
+        builder: (context) => MoreInfoPage2(
+          collectionKey: collectionKey,
+          experienceId: experienceId,
+        ),
+      ),
     );
   }
 

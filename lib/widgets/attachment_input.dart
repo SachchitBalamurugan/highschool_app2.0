@@ -1,3 +1,4 @@
+import 'package:SoulSync/widgets/add_image.dart';
 import 'package:SoulSync/widgets/removable_attachment.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ class AttachmentInput extends StatelessWidget {
   final double previewHeight;
   final double previewWidth;
   final List<String> filePaths;
+  final int? maxFiles;
   final Function(int)? onRemoveAttachment;
   final VoidCallback? onAddAttachment;
 
@@ -14,6 +16,7 @@ class AttachmentInput extends StatelessWidget {
     this.previewHeight = 148,
     this.previewWidth = double.infinity,
     this.filePaths = const [],
+    this.maxFiles,
     this.onRemoveAttachment,
     this.onAddAttachment,
   });
@@ -24,35 +27,28 @@ class AttachmentInput extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         ...filePaths.mapIndexed(
-          (idx, e) => RemovableAttachment(
-            filePath: e,
-            previewHeight: previewHeight,
-            previewWidth: previewWidth,
-            onRemove: () {
-              onRemoveAttachment?.call(idx);
-            },
+          (idx, e) => Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: RemovableAttachment(
+              filePath: e,
+              previewHeight: previewHeight,
+              previewWidth: previewWidth,
+              onRemove: onRemoveAttachment != null
+                  ? () {
+                      onRemoveAttachment?.call(idx);
+                    }
+                  : null,
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 8),
-          child: GestureDetector(
-            onTap: onAddAttachment,
-            child: Container(
-              height: previewHeight,
-              width: previewWidth,
-              margin: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: Colors.grey,
-                  width: 2,
-                ),
-              ),
-              child: const Icon(
-                Icons.file_upload_outlined,
-                color: Colors.grey,
-                size: 80,
-              ),
+        Visibility(
+          visible: maxFiles == null || filePaths.length < (maxFiles ?? 0),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: AddImage(
+              previewHeight: previewHeight,
+              previewWidth: previewWidth,
+              onAdd: onAddAttachment,
             ),
           ),
         ),

@@ -1,15 +1,12 @@
-import 'package:SoulSync/screens/profile_page.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import '../screens/course_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'app_info.dart';
-import '../screens/community.dart';
-import '../screens/account.dart';
-import 'iphone-14-12.dart';
-import 'BookingManager.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../screens/account.dart';
+import 'app_info.dart';
 
 
 class MoreInfo extends StatefulWidget {

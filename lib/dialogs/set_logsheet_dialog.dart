@@ -1,3 +1,4 @@
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/widgets/attachment_input.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,6 @@ class SetLogSheetDialog extends StatefulWidget {
 }
 
 class _SetLogSheetDialogState extends State<SetLogSheetDialog> {
-  final _supportedFileType = ['jpg', 'jpeg', 'png'];
   final _picker = ImagePicker();
 
   final _filePaths = <String>[];
@@ -102,7 +102,7 @@ class _SetLogSheetDialogState extends State<SetLogSheetDialog> {
     if (pickedImage == null) return;
 
     final ext = pickedImage.name.split('.').last;
-    if (!_supportedFileType.contains(ext)) {
+    if (!CollectionConstant.supportedFileType.contains(ext)) {
       Fluttertoast.showToast(msg: 'Please select image only');
       return;
     }

@@ -1,3 +1,4 @@
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/widgets/attachment_input.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,6 @@ class SetAwardDialog extends StatefulWidget {
 }
 
 class _SetAwardDialogState extends State<SetAwardDialog> {
-  final _supportedFileType = ['jpg', 'jpeg', 'png'];
   final _picker = ImagePicker();
   final _descriptionController = TextEditingController();
 
@@ -93,11 +93,13 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
                   },
                 ),
               ),
-              const SizedBox(height: 16),
-              AttachmentInput(
-                filePaths: _filePaths,
-                onAddAttachment: _onAddAttachment,
-                onRemoveAttachment: _onRemoveAttachment,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: AttachmentInput(
+                  filePaths: _filePaths,
+                  onAddAttachment: _onAddAttachment,
+                  onRemoveAttachment: _onRemoveAttachment,
+                ),
               ),
               const SizedBox(height: 24),
               Container(
@@ -123,7 +125,7 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
     if (pickedImage == null) return;
 
     final ext = pickedImage.name.split('.').last;
-    if (!_supportedFileType.contains(ext)) {
+    if (!CollectionConstant.supportedFileType.contains(ext)) {
       Fluttertoast.showToast(msg: 'Please select image only');
       return;
     }
