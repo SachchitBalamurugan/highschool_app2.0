@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDfhPV647e3fed_5MQs4mLbf-iLn8ZoG1M',
-    appId: '1:524101073230:android:9fb5aef95fff1ed139c61f',
-    messagingSenderId: '524101073230',
-    projectId: 'depression-8d67c',
-    storageBucket: 'depression-8d67c.appspot.com',
+    apiKey: 'AIzaSyBdUfqtgz8CbzPWj8EPYCRarC2QFkuty3Q',
+    appId: '1:475267003243:android:9611eb2f047a6d9425d22e',
+    messagingSenderId: '475267003243',
+    projectId: 'highschool-support-e17af',
+    storageBucket: 'highschool-support-e17af.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBUbxT2LSHInK3JKtuC-Io1Sdw3rTIOckY',
-    appId: '1:524101073230:ios:8b8b2dfc2e360fb939c61f',
-    messagingSenderId: '524101073230',
-    projectId: 'depression-8d67c',
-    storageBucket: 'depression-8d67c.appspot.com',
-    iosBundleId: 'com.example.depressionApp',
+    apiKey: 'AIzaSyA0ExW-kWnU9kGieJ6o0wKjks6gSBDXeD8',
+    appId: '1:475267003243:ios:0027f2c6b304d4a925d22e',
+    messagingSenderId: '475267003243',
+    projectId: 'highschool-support-e17af',
+    storageBucket: 'highschool-support-e17af.appspot.com',
+    iosBundleId: 'com.example.depressionApp2',
   );
 }

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "475267003243",
+    "project_id": "highschool-support-e17af",
+    "storage_bucket": "highschool-support-e17af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:475267003243:android:9611eb2f047a6d9425d22e",
+        "android_client_info": {
+          "package_name": "com.example.depression_app_2_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdUfqtgz8CbzPWj8EPYCRarC2QFkuty3Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
