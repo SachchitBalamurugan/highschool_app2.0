@@ -470,9 +470,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
 
     fileUrls.addAll(certificateUrls);
 
-    for (var e in filePaths) {
-      final file = File(e);
-      final fileName = e.split('/').lastOrNull;
+    for (final filePath in filePaths) {
+      final file = File(filePath);
+      final fileName = filePath.split('/').lastOrNull;
 
       final path = '${CollectionConstant.storageExperiences}/$fileName';
       final references = storageRef.child(path);
@@ -548,17 +548,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
     await _getAllData();
   }
 
-  void _onMoreInfo(String collectionKey, String experienceId) {
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => MoreInfo(),
-    //   ),
-    // );
-    // return;
-
-    Navigator.push(
-      context,
+  void _onMoreInfo(String collectionKey, String experienceId) async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => MoreInfoPage2(
           collectionKey: collectionKey,
@@ -566,6 +557,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
         ),
       ),
     );
+
+    await _getAllData();
   }
 
   void showLoadingDialog({

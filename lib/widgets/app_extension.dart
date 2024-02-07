@@ -1,3 +1,4 @@
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/models/experience_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -46,14 +47,22 @@ extension MapExt on Map<String, dynamic> {
   ExperienceDto toExperienceDto(String id) {
     return ExperienceDto(
       id: id,
-      award: getStringOrEmpty('award'),
-      event: getStringOrEmpty('event'),
-      date: getTimeStampOrNow('date').toDate().toString(),
-      organizer: getStringOrEmpty('organizer'),
-      organizerIcon: getStringOrEmpty('organizerIcon'),
-      awardDescription: getStringOrEmpty('awardDescription'),
-      certificates: getListStringOrEmpty('certificates'),
-      logSheets: getListStringOrEmpty('logSheets'),
+      award: getStringOrEmpty(CollectionConstant.award),
+      awardDescription: getStringOrEmpty(CollectionConstant.awardDescription),
+      event: getStringOrEmpty(CollectionConstant.event),
+      eventDescription: getStringOrEmpty(CollectionConstant.eventDescription),
+      date: getTimeStampOrNow(CollectionConstant.date).toDate().toString(),
+      organizer: getStringOrEmpty(CollectionConstant.organizer),
+      organizerIcon: getStringOrEmpty(CollectionConstant.organizerIcon),
+      certificates: getListStringOrEmpty(CollectionConstant.certificates),
+      certificatesDescription: getStringOrEmpty(
+        CollectionConstant.certificatesDescription,
+      ),
+      logSheets: getListStringOrEmpty(CollectionConstant.logSheets),
+      snapshots: getListStringOrEmpty(CollectionConstant.snapshots),
+      snapshotsDescription: getStringOrEmpty(
+        CollectionConstant.snapshotsDescription,
+      ),
     );
   }
 }

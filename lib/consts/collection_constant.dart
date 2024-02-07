@@ -1,4 +1,17 @@
 class CollectionConstant {
+  static const award = 'award';
+  static const awardDescription = 'awardDescription';
+  static const event = 'event';
+  static const eventDescription = 'eventDescription';
+  static const date = 'date';
+  static const organizer = 'organizer';
+  static const organizerIcon = 'organizerIcon';
+  static const certificates = 'certificates';
+  static const certificatesDescription = 'certificatesDescription';
+  static const logSheets = 'logSheets';
+  static const snapshots = 'snapshots';
+  static const snapshotsDescription = 'snapshotsDescription';
+
   static const users = 'users';
   static const academic = 'academic_achievements';
   static const athletic = 'athletic_participation';

@@ -1,6 +1,6 @@
 import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/widgets/attachment_input.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:SoulSync/widgets/network_image_thumbnail.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
@@ -72,23 +72,8 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: const EdgeInsets.symmetric(horizontal: 12),
                   itemBuilder: (ctx, idx) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: Colors.grey,
-                          width: 2,
-                        ),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(14),
-                        child: CachedNetworkImage(
-                          imageUrl: widget.urls[idx],
-                          height: 148,
-                          width: 148,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                    return NetworkImageThumbnail(
+                      imageUrl: widget.urls[idx],
                     );
                   },
                 ),
@@ -97,6 +82,7 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: AttachmentInput(
                   filePaths: _filePaths,
+                  maxFiles: 3 - widget.urls.length,
                   onAddAttachment: _onAddAttachment,
                   onRemoveAttachment: _onRemoveAttachment,
                 ),
