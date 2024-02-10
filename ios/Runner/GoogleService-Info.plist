@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyA0ExW-kWnU9kGieJ6o0wKjks6gSBDXeD8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>475267003243</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.depressionApp2</string>
+	<key>PROJECT_ID</key>
+	<string>highschool-support-e17af</string>
+	<key>STORAGE_BUCKET</key>
+	<string>highschool-support-e17af.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:475267003243:ios:0027f2c6b304d4a925d22e</string>
+</dict>
+</plist>
