@@ -245,9 +245,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
             .get();
 
         setState(() {
-          _userName = userSnapshot['User Name'] ?? "User";
-          _email = userSnapshot['Email'];
-          _phone = userSnapshot['Phone'];
+          _userName = userSnapshot[CollectionConstant.userName] ?? "User";
+          _email = userSnapshot[CollectionConstant.userEmail];
+          _phone = userSnapshot[CollectionConstant.userPhone];
         });
       } catch (e) {
         Fluttertoast.showToast(msg: 'Error fetching user data: $e');

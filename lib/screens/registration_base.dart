@@ -1,3 +1,4 @@
+import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -122,9 +123,10 @@ class RegistrationScreen extends StatelessWidget {
                           email: emailController.value.text,
                           password: passwordController.value.text);
                       await userEntry.doc(emailController.value.text).set({
-                        'User Name': userNameController.text,
-                        'Email': emailController.text,
-                        'Phone': phoneController.text,
+                        CollectionConstant.userName: userNameController.text,
+                        CollectionConstant.userEmail: emailController.text,
+                        CollectionConstant.userPhone: phoneController.text,
+                        CollectionConstant.userNameLower: userNameController.text.toLowerCase(),
                       });
                       FirebaseAuth.instance.currentUser!.updateDisplayName(userNameController.text.trim());
 

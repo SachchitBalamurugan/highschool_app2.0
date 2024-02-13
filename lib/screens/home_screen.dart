@@ -1,3 +1,4 @@
+import 'package:SoulSync/screens/search_user_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../screens/course_screen.dart';
@@ -17,6 +18,7 @@ class _HomeState extends State<HomePage> {
   String _userName = "";
   String _email = "";
   String _phone = "";
+
   @override
   void initState() {
     super.initState();
@@ -46,8 +48,6 @@ class _HomeState extends State<HomePage> {
     }
   }
 
-
-
   //create static data from lists
   List<String> concentrationVideos = [
     // Video names for the Concentration course
@@ -60,9 +60,7 @@ class _HomeState extends State<HomePage> {
     'Project Milestones',
   ];
 
-  List catNames = [
-
-  ];
+  List catNames = [];
 
   List<Color> catColors = [
     const Color(0xFF125061),
@@ -99,7 +97,6 @@ class _HomeState extends State<HomePage> {
   //   Center(child: Text('Account')),
   // ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +104,8 @@ class _HomeState extends State<HomePage> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.only(top: 15, left: 15, right: 15, bottom: 10),
+              padding: const EdgeInsets.only(
+                  top: 15, left: 15, right: 15, bottom: 10),
               decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -134,7 +132,8 @@ class _HomeState extends State<HomePage> {
                           onTap: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => AppInfoPage()),
+                              MaterialPageRoute(
+                                  builder: (context) => AppInfoPage()),
                             );
                           },
                           child: Icon(
@@ -163,7 +162,6 @@ class _HomeState extends State<HomePage> {
                             color: Colors.white,
                           ),
                         )
-
                       ],
                     ),
                     const SizedBox(height: 20),
@@ -198,6 +196,8 @@ class _HomeState extends State<HomePage> {
                           ),
                           prefixIcon: const Icon(Icons.search, size: 25),
                         ),
+                        readOnly: true,
+                        onTap: _onOpenSearch,
                       ),
                     ),
                   ],
@@ -212,7 +212,8 @@ class _HomeState extends State<HomePage> {
                     itemCount: catNames.length,
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
                       childAspectRatio: 1.1,
                     ),
@@ -223,7 +224,8 @@ class _HomeState extends State<HomePage> {
                             height: 60,
                             width: 60,
                             decoration: BoxDecoration(
-                                color: catColors[index], shape: BoxShape.circle),
+                                color: catColors[index],
+                                shape: BoxShape.circle),
                             child: Center(
                               child: catIcons[index],
                             ),
@@ -244,7 +246,8 @@ class _HomeState extends State<HomePage> {
                   // Add the heading for GPA
                   // Add the heading for GPA with margin below
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
@@ -286,7 +289,8 @@ class _HomeState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => CourseScreen(imgList[index]),
+                              builder: (context) =>
+                                  CourseScreen(imgList[index]),
                             ),
                           );
                         },
@@ -346,8 +350,8 @@ class _HomeState extends State<HomePage> {
                     },
                   ),
 
-
-                  SizedBox(height: 20), // Adjust the height for the desired separation
+                  SizedBox(height: 20),
+                  // Adjust the height for the desired separation
                   Column(
                     children: [
                       ElevatedButton(
@@ -382,7 +386,8 @@ class _HomeState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20), // Adjust the height for the desired separation
+                      SizedBox(height: 20),
+                      // Adjust the height for the desired separation
                       ElevatedButton(
                         onPressed: () {
                           Navigator.push(
@@ -446,7 +451,14 @@ class _HomeState extends State<HomePage> {
       // ),
     );
   }
+
+  void _onOpenSearch() {
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => const SearchUserPage(),
+    ));
+  }
 }
+
 class CircularProgressBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -461,4 +473,3 @@ class CircularProgressBar extends StatelessWidget {
     );
   }
 }
-
