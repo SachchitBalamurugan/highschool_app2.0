@@ -33,13 +33,14 @@ class MoreInfoPage2 extends StatefulWidget {
 class _MoreInfoPage2State extends State<MoreInfoPage2> {
   final _picker = ImagePicker();
   final _eventIcons = <String>[];
+  final _awardController = TextEditingController();
   final _eventController = TextEditingController();
   final _eventDescController = TextEditingController();
 
   final _awardImages = <String>[];
   final _additionalAwardImages1 = <String>[];
   final _additionalAwardImages2 = <String>[];
-  final _awardController = TextEditingController();
+  final _awardDescriptionController = TextEditingController();
 
   final _snapshotImages = <String>[];
   final _additionalSnapshotImages1 = <String>[];
@@ -246,6 +247,17 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
+                  controller: _awardController,
+                  decoration: const InputDecoration(
+                    hintText: 'Award',
+                  ),
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -326,7 +338,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
-                  controller: _awardController,
+                  controller: _awardDescriptionController,
                   decoration: const InputDecoration(
                     hintText: 'Type your Info Here...',
                   ),
@@ -495,7 +507,8 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
 
     _eventController.text = _experience?.event ?? '';
     _eventDescController.text = _experience?.eventDescription ?? '';
-    _awardController.text = _experience?.awardDescription ?? '';
+    _awardController.text = _experience?.award ?? '';
+    _awardDescriptionController.text = _experience?.awardDescription ?? '';
     _snapshotController.text = _experience?.snapshotsDescription ?? '';
   }
 
@@ -621,7 +634,8 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
 
       newMap[CollectionConstant.certificates] = urls;
     }
-    newMap[CollectionConstant.certificatesDescription] = _awardController.text;
+    newMap[CollectionConstant.award] = _awardController.text;
+    newMap[CollectionConstant.certificatesDescription] = _awardDescriptionController.text;
 
     /// Snapshots
     final collectiveSnapshotImages = <String>[];
