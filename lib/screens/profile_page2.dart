@@ -245,9 +245,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
             .get();
 
         setState(() {
-          _userName = userSnapshot['User Name'] ?? "User";
-          _email = userSnapshot['Email'];
-          _phone = userSnapshot['Phone'];
+          _userName = userSnapshot[CollectionConstant.userName] ?? "User";
+          _email = userSnapshot[CollectionConstant.userEmail];
+          _phone = userSnapshot[CollectionConstant.userPhone];
         });
       } catch (e) {
         Fluttertoast.showToast(msg: 'Error fetching user data: $e');
@@ -397,6 +397,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
       builder: (ctx) {
         return SetAwardDialog(
           description: description,
+          isEditable: true,
           urls: certificateUrls,
         );
       },
@@ -436,6 +437,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
       context: context,
       builder: (ctx) {
         return SetLogSheetDialog(
+          isEditable: true,
           urls: logSheetUrls,
         );
       },
@@ -554,6 +556,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
         builder: (context) => MoreInfoPage2(
           collectionKey: collectionKey,
           experienceId: experienceId,
+          isEditable: true,
+          email: _email,
         ),
       ),
     );

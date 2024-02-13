@@ -19,11 +19,15 @@ import 'package:velocity_x/velocity_x.dart';
 class MoreInfoPage2 extends StatefulWidget {
   final String collectionKey;
   final String experienceId;
+  final bool isEditable;
+  final String email;
 
   const MoreInfoPage2({
     super.key,
     required this.collectionKey,
     required this.experienceId,
+    required this.isEditable,
+    required this.email,
   });
 
   @override
@@ -33,13 +37,14 @@ class MoreInfoPage2 extends StatefulWidget {
 class _MoreInfoPage2State extends State<MoreInfoPage2> {
   final _picker = ImagePicker();
   final _eventIcons = <String>[];
+  final _awardController = TextEditingController();
   final _eventController = TextEditingController();
   final _eventDescController = TextEditingController();
 
   final _awardImages = <String>[];
   final _additionalAwardImages1 = <String>[];
   final _additionalAwardImages2 = <String>[];
-  final _awardController = TextEditingController();
+  final _awardDescriptionController = TextEditingController();
 
   final _snapshotImages = <String>[];
   final _additionalSnapshotImages1 = <String>[];
@@ -115,26 +120,29 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                           color: Colors.white,
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          InkWell(
-                            onTap: _onOpenInfoPage,
-                            child: const Icon(
-                              Icons.info,
-                              size: 30,
-                              color: Colors.white,
+                      Visibility(
+                        visible: widget.isEditable,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            InkWell(
+                              onTap: _onOpenInfoPage,
+                              child: const Icon(
+                                Icons.info,
+                                size: 30,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: _onOpenProfilePage,
-                            child: const Icon(
-                              Icons.person,
-                              size: 30,
-                              color: Colors.white,
-                            ),
-                          )
-                        ],
+                            GestureDetector(
+                              onTap: _onOpenProfilePage,
+                              child: const Icon(
+                                Icons.person,
+                                size: 30,
+                                color: Colors.white,
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                       const SizedBox(height: 20),
                       Padding(
@@ -195,6 +203,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                         imageUrl: _experience?.organizerIcon,
                         previewHeight: 120,
                         previewWidth: 120,
+                        isEditable: widget.isEditable,
                         onAddAttachment: () {
                           _onAddImage('_eventIcons');
                         },
@@ -204,6 +213,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                         previewHeight: 120,
                         previewWidth: 120,
                         maxFiles: 1,
+                        isEditable: widget.isEditable,
                         onAddAttachment: () {
                           _onAddImage('_eventIcons');
                         },
@@ -221,6 +231,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                             decoration: const InputDecoration(
                               hintText: 'Event Name',
                             ),
+                            readOnly: !widget.isEditable,
                             textInputAction: TextInputAction.next,
                           ),
                           const SizedBox(height: 6),
@@ -229,6 +240,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                             decoration: const InputDecoration(
                               hintText: 'Event Description',
                             ),
+                            readOnly: !widget.isEditable,
                             textInputAction: TextInputAction.newline,
                             maxLines: 2,
                           ),
@@ -246,6 +258,18 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   fontWeight: FontWeight.w600,
                 ),
               ),
+              const SizedBox(height: 8),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: TextFormField(
+                  controller: _awardController,
+                  decoration: const InputDecoration(
+                    hintText: 'Award',
+                  ),
+                  readOnly: !widget.isEditable,
+                  textInputAction: TextInputAction.done,
+                ),
+              ),
               const SizedBox(height: 12),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -253,12 +277,14 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   visible: _experience?.certificates.elementAtOrNull(0) == null,
                   replacement: NetworkImageThumbnail(
                     imageUrl: _experience?.certificates.elementAtOrNull(0),
+                    isEditable: widget.isEditable,
                     previewHeight: 180,
                   ),
                   child: AttachmentInput(
                     filePaths: _awardImages,
                     previewHeight: 180,
                     maxFiles: 1,
+                    isEditable: widget.isEditable,
                     onAddAttachment: () {
                       _onAddImage('_awardImages');
                     },
@@ -274,10 +300,13 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   children: [
                     Expanded(
                       child: Visibility(
-                        visible: _experience?.certificates.elementAtOrNull(1) == null,
+                        visible: _experience?.certificates.elementAtOrNull(1) ==
+                            null,
                         replacement: NetworkImageThumbnail(
-                          imageUrl: _experience?.certificates.elementAtOrNull(1),
+                          imageUrl:
+                              _experience?.certificates.elementAtOrNull(1),
                           previewHeight: 124,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalAwardImages1');
                           },
@@ -286,6 +315,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                           filePaths: _additionalAwardImages1,
                           previewHeight: 124,
                           maxFiles: 1,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalAwardImages1');
                           },
@@ -298,10 +328,13 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                     const SizedBox(width: 16),
                     Expanded(
                       child: Visibility(
-                        visible: _experience?.certificates.elementAtOrNull(2) == null,
+                        visible: _experience?.certificates.elementAtOrNull(2) ==
+                            null,
                         replacement: NetworkImageThumbnail(
-                          imageUrl: _experience?.certificates.elementAtOrNull(2),
+                          imageUrl:
+                              _experience?.certificates.elementAtOrNull(2),
                           previewHeight: 124,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalAwardImages2');
                           },
@@ -310,6 +343,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                           filePaths: _additionalAwardImages2,
                           previewHeight: 124,
                           maxFiles: 1,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalAwardImages2');
                           },
@@ -326,10 +360,11 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: TextFormField(
-                  controller: _awardController,
+                  controller: _awardDescriptionController,
                   decoration: const InputDecoration(
                     hintText: 'Type your Info Here...',
                   ),
+                  readOnly: !widget.isEditable,
                   textInputAction: TextInputAction.done,
                 ),
               ),
@@ -349,6 +384,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   replacement: NetworkImageThumbnail(
                     imageUrl: _experience?.snapshots.elementAtOrNull(0),
                     previewHeight: 180,
+                    isEditable: widget.isEditable,
                     onAddAttachment: () {
                       _onAddImage('_snapshotImages');
                     },
@@ -357,6 +393,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                     filePaths: _snapshotImages,
                     previewHeight: 180,
                     maxFiles: 1,
+                    isEditable: widget.isEditable,
                     onAddAttachment: () {
                       _onAddImage('_snapshotImages');
                     },
@@ -372,10 +409,12 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   children: [
                     Expanded(
                       child: Visibility(
-                        visible: _experience?.snapshots.elementAtOrNull(1) == null,
+                        visible:
+                            _experience?.snapshots.elementAtOrNull(1) == null,
                         replacement: NetworkImageThumbnail(
                           imageUrl: _experience?.snapshots.elementAtOrNull(1),
                           previewHeight: 124,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalSnapshotImages1');
                           },
@@ -384,6 +423,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                           filePaths: _additionalSnapshotImages1,
                           previewHeight: 124,
                           maxFiles: 1,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalSnapshotImages1');
                           },
@@ -396,10 +436,12 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                     const SizedBox(width: 16),
                     Expanded(
                       child: Visibility(
-                        visible: _experience?.snapshots.elementAtOrNull(2) == null,
+                        visible:
+                            _experience?.snapshots.elementAtOrNull(2) == null,
                         replacement: NetworkImageThumbnail(
                           imageUrl: _experience?.snapshots.elementAtOrNull(2),
                           previewHeight: 124,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalSnapshotImages2');
                           },
@@ -408,6 +450,7 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                           filePaths: _additionalSnapshotImages2,
                           previewHeight: 124,
                           maxFiles: 1,
+                          isEditable: widget.isEditable,
                           onAddAttachment: () {
                             _onAddImage('_additionalSnapshotImages2');
                           },
@@ -428,16 +471,20 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
                   decoration: const InputDecoration(
                     hintText: 'Type your Info Here...',
                   ),
+                  readOnly: !widget.isEditable,
                   textInputAction: TextInputAction.done,
                 ),
               ),
               const SizedBox(height: 48),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                child: FilledButton(
-                  onPressed: _onSave,
-                  child: const Text('Save'),
+              Visibility(
+                visible: widget.isEditable,
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  child: FilledButton(
+                    onPressed: _onSave,
+                    child: const Text('Save'),
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -450,21 +497,20 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
 
   Future<void> _getUserInfo() async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection(CollectionConstant.users)
-            .doc(user.email)
-            .get();
 
-        setState(() {
-          _userName = userSnapshot['User Name'] ?? "User";
-          _email = userSnapshot['Email'];
-          _phone = userSnapshot['Phone'];
-        });
-      } catch (e) {
-        Fluttertoast.showToast(msg: 'Error fetching user data: $e');
-      }
+    try {
+      DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+          .collection(CollectionConstant.users)
+          .doc(widget.isEditable ? user?.email : widget.email)
+          .get();
+
+      setState(() {
+        _userName = userSnapshot['User Name'] ?? "User";
+        _email = userSnapshot['Email'];
+        _phone = userSnapshot['Phone'];
+      });
+    } catch (e) {
+      Fluttertoast.showToast(msg: 'Error fetching user data: $e');
     }
   }
 
@@ -495,7 +541,8 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
 
     _eventController.text = _experience?.event ?? '';
     _eventDescController.text = _experience?.eventDescription ?? '';
-    _awardController.text = _experience?.awardDescription ?? '';
+    _awardController.text = _experience?.award ?? '';
+    _awardDescriptionController.text = _experience?.awardDescription ?? '';
     _snapshotController.text = _experience?.snapshotsDescription ?? '';
   }
 
@@ -621,7 +668,9 @@ class _MoreInfoPage2State extends State<MoreInfoPage2> {
 
       newMap[CollectionConstant.certificates] = urls;
     }
-    newMap[CollectionConstant.certificatesDescription] = _awardController.text;
+    newMap[CollectionConstant.award] = _awardController.text;
+    newMap[CollectionConstant.certificatesDescription] =
+        _awardDescriptionController.text;
 
     /// Snapshots
     final collectiveSnapshotImages = <String>[];

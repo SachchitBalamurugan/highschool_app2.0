@@ -7,12 +7,14 @@ class NetworkImageThumbnail extends StatelessWidget {
   final double previewHeight;
   final double previewWidth;
   final String? imageUrl;
+  final bool isEditable;
   final VoidCallback? onAddAttachment;
 
   const NetworkImageThumbnail({
     super.key,
     this.previewHeight = 148,
     this.previewWidth = double.infinity,
+    this.isEditable = true,
     this.imageUrl,
     this.onAddAttachment,
   });
