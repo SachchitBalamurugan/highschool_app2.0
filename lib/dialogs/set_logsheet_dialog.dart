@@ -7,9 +7,11 @@ import 'package:image_picker/image_picker.dart';
 
 class SetLogSheetDialog extends StatefulWidget {
   final List<String> urls;
+  final bool isEditable;
 
   const SetLogSheetDialog({
     super.key,
+    required this.isEditable,
     this.urls = const [],
   });
 
@@ -75,16 +77,20 @@ class _SetLogSheetDialogState extends State<SetLogSheetDialog> {
               const SizedBox(height: 16),
               AttachmentInput(
                 filePaths: _filePaths,
+                isEditable: widget.isEditable,
                 onAddAttachment: _onAddAttachment,
                 onRemoveAttachment: _onRemoveAttachment,
               ),
               const SizedBox(height: 24),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                child: FilledButton(
-                  onPressed: _onSave,
-                  child: const Text('Save'),
+              Visibility(
+                visible: widget.isEditable,
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  child: FilledButton(
+                    onPressed: _onSave,
+                    child: const Text('Save'),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

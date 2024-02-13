@@ -397,6 +397,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
       builder: (ctx) {
         return SetAwardDialog(
           description: description,
+          isEditable: true,
           urls: certificateUrls,
         );
       },
@@ -436,6 +437,7 @@ class _ProfilePage2State extends State<ProfilePage2> {
       context: context,
       builder: (ctx) {
         return SetLogSheetDialog(
+          isEditable: true,
           urls: logSheetUrls,
         );
       },
@@ -554,6 +556,8 @@ class _ProfilePage2State extends State<ProfilePage2> {
         builder: (context) => MoreInfoPage2(
           collectionKey: collectionKey,
           experienceId: experienceId,
+          isEditable: true,
+          email: _email,
         ),
       ),
     );

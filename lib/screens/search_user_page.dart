@@ -1,5 +1,6 @@
 import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/models/user_dto.dart';
+import 'package:SoulSync/screens/view_profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -95,36 +96,43 @@ class _SearchUserPageState extends State<SearchUserPage> {
             itemCount: _userList.length,
             padding: const EdgeInsets.symmetric(vertical: 24),
             itemBuilder: (ctx, idx) {
-              return Container(
-                padding: const EdgeInsets.all(12),
-                margin: const EdgeInsets.symmetric(
-                  vertical: 9,
-                  horizontal: 16,
-                ),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _userList[idx].name,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+              final user = _userList[idx];
+
+              return GestureDetector(
+                onTap: () {
+                  _onViewUser(user.email);
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.symmetric(
+                    vertical: 9,
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        _userList[idx].name,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 6),
-                    Text(
-                      _userList[idx].email,
-                      style: const TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.black54,
+                      const SizedBox(height: 6),
+                      Text(
+                        _userList[idx].email,
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black54,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             },
@@ -168,5 +176,11 @@ class _SearchUserPageState extends State<SearchUserPage> {
         );
       }));
     });
+  }
+
+  void _onViewUser(String email) {
+    Navigator.of(context).push(MaterialPageRoute(builder: (ctx) {
+      return ViewProfilePage(email: email);
+    }));
   }
 }

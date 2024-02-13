@@ -7,11 +7,13 @@ import 'package:image_picker/image_picker.dart';
 
 class SetAwardDialog extends StatefulWidget {
   final String description;
+  final bool isEditable;
   final List<String> urls;
 
   const SetAwardDialog({
     super.key,
     required this.description,
+    required this.isEditable,
     this.urls = const [],
   });
 
@@ -59,7 +61,8 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
                   decoration: const InputDecoration(
                     hintText: 'Insert award description',
                   ),
-                  textInputAction: TextInputAction.next,
+                  readOnly: !widget.isEditable,
+                  textInputAction: TextInputAction.done,
                 ),
               ),
               const SizedBox(height: 24),
@@ -74,26 +77,33 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
                   itemBuilder: (ctx, idx) {
                     return NetworkImageThumbnail(
                       imageUrl: widget.urls[idx],
+                      isEditable: widget.isEditable,
                     );
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: AttachmentInput(
-                  filePaths: _filePaths,
-                  maxFiles: 3 - widget.urls.length,
-                  onAddAttachment: _onAddAttachment,
-                  onRemoveAttachment: _onRemoveAttachment,
+              Visibility(
+                visible: widget.isEditable,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: AttachmentInput(
+                    filePaths: _filePaths,
+                    maxFiles: 3 - widget.urls.length,
+                    onAddAttachment: _onAddAttachment,
+                    onRemoveAttachment: _onRemoveAttachment,
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 12),
-                child: FilledButton(
-                  onPressed: _onSave,
-                  child: const Text('Save'),
+              Visibility(
+                visible: widget.isEditable,
+                child: Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 12),
+                  child: FilledButton(
+                    onPressed: _onSave,
+                    child: const Text('Save'),
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

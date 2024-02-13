@@ -72,15 +72,18 @@ class _ProfileSectionState extends State<ProfileSection> {
                     ),
                   ),
                 ),
-                IconButton(
-                  onPressed: () {
-                    widget.onAdd?.call(widget.collectionKey);
-                  },
-                  splashRadius: 24,
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
-                    Icons.add_rounded,
-                    color: Color(0xFF9F9D9D),
+                Visibility(
+                  visible: widget.onAdd != null,
+                  child: IconButton(
+                    onPressed: () {
+                      widget.onAdd?.call(widget.collectionKey);
+                    },
+                    splashRadius: 24,
+                    padding: EdgeInsets.zero,
+                    icon: const Icon(
+                      Icons.add_rounded,
+                      color: Color(0xFF9F9D9D),
+                    ),
                   ),
                 )
               ],
@@ -91,7 +94,7 @@ class _ProfileSectionState extends State<ProfileSection> {
                 height: 120,
                 child: Center(
                   child: Text(
-                    'No data, please add one',
+                    'No data available',
                     style: TextStyle(
                       color: Colors.grey.shade600,
                     ),
