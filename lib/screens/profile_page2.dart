@@ -556,8 +556,9 @@ class _ProfilePage2State extends State<ProfilePage2> {
       await showDialog(
         context: context,
         builder: (ctx) {
-          return const CourseScoreDialog(
-            scoreList: [],
+          return CourseScoreDialog(
+            email: _email,
+            experienceId: experienceId,
             isEditable: true,
           );
         },
@@ -574,8 +575,6 @@ class _ProfilePage2State extends State<ProfilePage2> {
         ),
       );
     }
-
-
 
     await _getAllData();
   }

@@ -283,7 +283,9 @@ class _ProfileSectionState extends State<ProfileSection> {
                           child: Padding(
                             padding: const EdgeInsets.only(left: 8),
                             child: CachedNetworkImage(
-                              imageUrl: item.organizerIcon,
+                              imageUrl: item.organizerIcon.isEmpty
+                                  ? CollectionConstant.emptyImage
+                                  : item.organizerIcon,
                               width: 64,
                               height: 64,
                               fit: BoxFit.contain,

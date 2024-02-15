@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:SoulSync/consts/collection_constant.dart';
+import 'package:SoulSync/dialogs/course_score_dialog.dart';
 import 'package:SoulSync/dialogs/set_award_dialog.dart';
 import 'package:SoulSync/dialogs/set_logsheet_dialog.dart';
 import 'package:SoulSync/models/experience_dto.dart';
@@ -490,16 +491,29 @@ class _ViewProfilePageState extends State<ViewProfilePage> {
   }
 
   void _onMoreInfo(String collectionKey, String experienceId) async {
-    await Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => MoreInfoPage2(
-          collectionKey: collectionKey,
-          experienceId: experienceId,
-          isEditable: false,
-          email: _email,
+    if (collectionKey == CollectionConstant.honor) {
+      await showDialog(
+        context: context,
+        builder: (ctx) {
+          return CourseScoreDialog(
+            email: _email,
+            experienceId: experienceId,
+            isEditable: false,
+          );
+        },
+      );
+    } else {
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MoreInfoPage2(
+            collectionKey: collectionKey,
+            experienceId: experienceId,
+            isEditable: false,
+            email: _email,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
     await _getAllData();
   }

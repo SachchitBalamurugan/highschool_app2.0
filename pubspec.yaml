@@ -70,6 +70,7 @@ dependencies:
   collection: ^1.18.0
   ndialog: ^4.3.1
   dropdown_button2: ^2.3.9
+  sprintf: ^7.0.0
 
 dev_dependencies:
   flutter_test:
