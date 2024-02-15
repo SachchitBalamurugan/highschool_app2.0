@@ -36,12 +36,28 @@ class _SetLogSheetDialogState extends State<SetLogSheetDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Log Sheet",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                ),
+              Stack(
+                children: [
+                  const Align(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Text(
+                        "Log Sheet",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: Navigator.of(context).pop,
+                      icon: const Icon(Icons.close_rounded),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
               Visibility(

@@ -46,12 +46,28 @@ class _SetAwardDialogState extends State<SetAwardDialog> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                "Awards",
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.w600,
-                ),
+              Stack(
+                children: [
+                  const Align(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 4),
+                      child: Text(
+                        "Awards",
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: Navigator.of(context).pop,
+                      icon: const Icon(Icons.close_rounded),
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(height: 16),
               Padding(
