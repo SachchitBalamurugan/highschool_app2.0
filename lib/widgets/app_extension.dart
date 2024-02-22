@@ -1,5 +1,6 @@
 import 'package:SoulSync/consts/collection_constant.dart';
 import 'package:SoulSync/models/experience_dto.dart';
+import 'package:SoulSync/models/score_dto.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
@@ -14,6 +15,18 @@ extension MapExt on Map<String, dynamic> {
     }
 
     return '';
+  }
+
+  double? getDoubleOrNull(String key) {
+    if (containsKey(key)) {
+      final value = this[key];
+
+      if (value is double) {
+        return value;
+      }
+    }
+
+    return null;
   }
 
   List<String> getListStringOrEmpty(String key) {
@@ -63,6 +76,15 @@ extension MapExt on Map<String, dynamic> {
       snapshotsDescription: getStringOrEmpty(
         CollectionConstant.snapshotsDescription,
       ),
+    );
+  }
+
+  ScoreDto toScoreDto(String id) {
+    return ScoreDto(
+      id: id,
+      semester1: getDoubleOrNull(CollectionConstant.semester1),
+      semester2: getDoubleOrNull(CollectionConstant.semester2),
+      scoreFile: getStringOrEmpty(CollectionConstant.scoreFile),
     );
   }
 }

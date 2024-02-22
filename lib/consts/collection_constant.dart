@@ -11,6 +11,9 @@ class CollectionConstant {
   static const logSheets = 'logSheets';
   static const snapshots = 'snapshots';
   static const snapshotsDescription = 'snapshotsDescription';
+  static const semester1 = 'semester1';
+  static const semester2 = 'semester2';
+  static const scoreFile = 'scoreFile';
 
   static const users = 'users';
   static const academic = 'academic_achievements';
